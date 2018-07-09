@@ -12,7 +12,7 @@ const initialState = {
       artist: "N'Sync",
       songId: 1,
       songArray: songList[1],
-      arrayPosition: 0
+      arrayPosition: 0,
     },
     2: {
       title: "What's Goin' On",
@@ -26,7 +26,7 @@ const initialState = {
 
 // REDUX REDUCERS
 // Communicates desired state mutations to store via actions
-const lyricsChangeReducer = (state = initialState.songsById, action) => {
+const lyricChangeReducer = (state = initialState.songsById, action) => {
   let newArrayPosition;
   let newSongsByIdEntry;
   let newSongsByIdStateSlice;
@@ -37,11 +37,11 @@ const lyricsChangeReducer = (state = initialState.songsById, action) => {
       newArrayPosition = state[action.currentSongId].arrayPosition + 1;
       // Creates a copy of that song's entry in the sonsById state slice, and adds the newArrayPosition value
       newSongsByIdEntry = Object.assign({}, state[action.currentSongId], {
-       arrayPosition: newArrayPosition
+        arrayPosition: newArrayPosition
       })
       // Creates a copy of the enture songsById state slice, and adds the newSongsById state entry to this copy
       newSongsByIdStateSlice = Object.assign({}, state, {
-        [action.currentSongId]: newSongsByIdEntry
+       [action.currentSongId]: newSongsByIdEntry
       });
       // Returns the newSongsByIdStateSlice, which updates state in the Redux store
       return newSongsByIdStateSlice;
@@ -49,11 +49,11 @@ const lyricsChangeReducer = (state = initialState.songsById, action) => {
     case 'RESTART_SONG':
       // Creates a copy of the song entry in the songsById state slice whose ID matches the currentSongId included with the action, set's arrayPosition to 0
       newSongsByIdEntry = Object.assign({}, state[action.currentSongId], {
-          arrayPosition: 0
+        arrayPosition: 0
       })
       // Creates a copy of the songsById state slice, adds updated newSongsByIdEntry to this copy
       newSongsByIdStateSlice = Object.assign({}, state, {
-         [action.currentSongId]: newSongsByIdEntry
+        [action.currentSongId]: newSongsByIdEntry
       });
       // Returns the newSongsByIdStateSlice, which updates state in the Redux store
       return newSongsByIdStateSlice;
@@ -64,59 +64,61 @@ const lyricsChangeReducer = (state = initialState.songsById, action) => {
 }
 
 const songChangeReducer = (state = initialState.currentSongId, action) => {
-  switch (action.type) {
+  switch (action.type){
     case 'CHANGE_SONG':
-      return action.newSelectedSongId;
+      return action.newSelectedSongId
     default:
-    return state;
+      return state;
   }
 }
 
 // JEST TESTS + SETUP
 const { expect } = window;
 
-expect(lyricsChangeReducer(initialState.songsById, { type: null })).toEqual(initialState.songsById);
+expect(lyricChangeReducer(initialState.songsById, { type: null })).toEqual(initialState.songsById);
 
-// expect(lyricsChangeReducer(initialState.songsById, { type: 'NEXT_LYRIC', currentSongId: 2 })).toEqual({
-//   1: {
-//     title: "Bye Bye Bye",
-//     artist: "N'Sync",
-//     songId: 1,
-//     songArray: songList[1],
-//     arrayPosition: 0,
-//   },
-//   2: {
-//     title: "What's Goin' On",
-//     artist: "Four Non-Blondes",
-//     songId: 2,
-//     songArray: songList[2],
-//     arrayPosition: 0,
-//   }
-// });
-//
-// expect(lyricsChangeReducer(initialState.songsById, { type: 'RESTART_SONG', currentSongId: 1 })).toEqual({
-//   1: {
-//     title: "Bye Bye Bye",
-//     artist: "N'Sync",
-//     songId: 1,
-//     songArray: songList[1],
-//     arrayPosition: 0,
-//   },
-//   2: {
-//     title: "What's Goin' On",
-//     artist: "Four Non-Blondes",
-//     songId: 2,
-//     songArray: songList[2],
-//     arrayPosition: 0,
-//   }
-// });
+expect(lyricChangeReducer(initialState.songsById, { type: 'NEXT_LYRIC', currentSongId: 2 })).toEqual({
+  1: {
+    title: "Bye Bye Bye",
+    artist: "N'Sync",
+    songId: 1,
+    songArray: songList[1],
+    arrayPosition: 0,
+  },
+  2: {
+    title: "What's Goin' On",
+    artist: "Four Non-Blondes",
+    songId: 2,
+    songArray: songList[2],
+    arrayPosition: 1,
+  }
+});
 
-expect(songChangeReducer(initialState.currentSongId, { type: 'CHANGE_SONG', newSelectedSongId: 1})).toEqual(1);
+expect(lyricChangeReducer(initialState.songsById, { type: 'RESTART_SONG', currentSongId: 1 })).toEqual({
+  1: {
+    title: "Bye Bye Bye",
+    artist: "N'Sync",
+    songId: 1,
+    songArray: songList[1],
+    arrayPosition: 0,
+  },
+  2: {
+    title: "What's Goin' On",
+    artist: "Four Non-Blondes",
+    songId: 2,
+    songArray: songList[2],
+    arrayPosition: 0,
+  }
+});
+
+expect(songChangeReducer(initialState, { type: null })).toEqual(initialState);
+
+expect(songChangeReducer(initialState, { type: 'CHANGE_SONG', newSelectedSongId: 1 })).toEqual(1);
 
 // REDUX STORE
 // creates store and passes a reducer as an argument
 const { createStore } = Redux;
-const store = createStore(lyricsChangeReducer);
+const store = createStore(lyricChangeReducer);
 
 // // RENDERING STATE IN DOM
 // const renderLyrics = () => {
