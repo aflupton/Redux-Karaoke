@@ -120,7 +120,27 @@ expect(songChangeReducer(initialState, { type: 'CHANGE_SONG', newSelectedSongId:
 const { createStore } = Redux;
 const store = createStore(lyricChangeReducer);
 
-// // RENDERING STATE IN DOM
+// RENDERING STATE IN DOM
+const renderSongs = () => {
+  const songsById = store.getState().songsById;
+  for (const songKey in songsById) {
+    const song = songsById[songKey]
+    const li = document.createElement('li');
+    const h3 = document.createElement('h3');
+    const em = document.createElement('em');
+    const songTitle = document.createTextNode(song.title);
+    const songArtist = document.createTextNode(' by ' + song.artist);
+    em.appendChild(songTitle);
+    h3.appendChild(em);
+    h3.appendChild(songArtist);
+    h3.addEventListener('click', function() {
+      selectSong(song.songId);
+    });
+    li.appendChild(h3);
+    document.getElementById('songs').appendChild(li);
+  }
+}
+
 // const renderLyrics = () => {
 //   // Defines a lyricsDisplay constant referring to the div with a 'lyrics' ID in index.html
 //   const lyricsDisplay = document.getElementById('lyrics');
@@ -140,7 +160,7 @@ const store = createStore(lyricChangeReducer);
 // window.onload = function() {
 //   renderLyrics();
 // }
-//
+
 // // CLICK LISTENER
 // const userClick = () => {
 //   // Runs 'restart_song' action after cycling thru array
