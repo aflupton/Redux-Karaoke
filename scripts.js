@@ -160,7 +160,7 @@ const renderSongs = () => {
 // window.onload = function() {
 //   renderLyrics();
 // }
-
+//
 // // CLICK LISTENER
 // const userClick = () => {
 //   // Runs 'restart_song' action after cycling thru array
