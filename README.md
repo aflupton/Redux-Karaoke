@@ -3,7 +3,7 @@
 
 ## Description
 
-A basic JS project to learn how to manage state with Redux.
+A basic JS project to learn how to manage state with Redux using hardcoded data and simplified state.
 
 ## Setup
 
